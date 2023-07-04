@@ -23,6 +23,7 @@ object MainForm: TMainForm
     ScrollBars = ssAutoVertical
     TabOrder = 0
     ViewStyle = vsIcon
+    OnMouseDown = ListViewCatsMouseDown
   end
   object ImageList1: TImageList
     Height = 64
@@ -223,5 +224,35 @@ object MainForm: TMainForm
       AAF04CCA53E8332BA1FFF4851C57ECF0EFBF2908B9A126BC7BA02D3C83D415FA
       484B88AFB290DB9F3DCEFF0F50B24E11
     }
+  end
+  object PopupMenuCat: TPopupMenu
+    Left = 104
+    Top = 270
+    object MenuItemCatShow: TMenuItem
+      Caption = 'Show'
+      OnClick = MenuItemCatShowClick
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemCatFeed: TMenuItem
+      Caption = 'Feed'
+    end
+    object MenuItemCatPlay: TMenuItem
+      Caption = 'Play'
+    end
+    object MenuItemCatCleanse: TMenuItem
+      Caption = 'Cleanse'
+    end
+  end
+  object PopupMenuSpace: TPopupMenu
+    Left = 208
+    Top = 270
+    object MenuItemNewCat: TMenuItem
+      Caption = 'New'
+    end
+    object MenuItemRefreshSpace: TMenuItem
+      Caption = 'Refresh'
+    end
   end
 end
