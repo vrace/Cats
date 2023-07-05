@@ -32,7 +32,14 @@ begin
 end;
 
 destructor TCatRepository.Destroy;
+var
+  cat: TCat;
 begin
+  while FCats.Count > 0 do begin
+    cat := TCat(FCats[0]);
+    cat.Free;
+    FCats.Delete(0);
+  end;
   FreeAndNil(FCats);
   inherited;
 end;

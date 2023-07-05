@@ -5,7 +5,7 @@ unit Main;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Cat, CatRepository;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Cat, CatRepository, NewCat;
 
 type
 
@@ -14,6 +14,8 @@ type
   TMainForm = class(TForm)
     ImageList1: TImageList;
     ListViewCats: TListView;
+    MenuItemCatDispose: TMenuItem;
+    Separator2: TMenuItem;
     MenuItemNewCat: TMenuItem;
     MenuItemRefreshSpace: TMenuItem;
     MenuItemCatFeed: TMenuItem;
@@ -28,6 +30,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure ListViewCatsMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MenuItemCatShowClick(Sender: TObject);
+    procedure MenuItemNewCatClick(Sender: TObject);
+    procedure MenuItemRefreshSpaceClick(Sender: TObject);
   private
     FCatRepository: TCatRepository;
     procedure ResetListViewCats;
@@ -81,6 +85,26 @@ begin
   cat := TCat(ListViewCats.Selected.Data);
   msg := Format('Showing cat ''%s''', [cat.Name]);
   ShowMessage(msg);
+end;
+
+procedure TMainForm.MenuItemNewCatClick(Sender: TObject);
+var
+  newCatForm: TNewCatForm;
+begin
+  try
+    newCatForm := TNewCatForm.Create(self);
+    if newCatForm.ShowModal = mrOk then begin
+      FCatRepository.NewCat(newCatForm.EditNewCatName.Text).Free;
+      InvalidateListViewCats;
+    end;
+  finally
+    newCatForm.Free;
+  end;
+end;
+
+procedure TMainForm.MenuItemRefreshSpaceClick(Sender: TObject);
+begin
+  InvalidateListViewCats;
 end;
 
 procedure TMainForm.ResetListViewCats;

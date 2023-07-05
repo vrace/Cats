@@ -244,15 +244,23 @@ object MainForm: TMainForm
     object MenuItemCatCleanse: TMenuItem
       Caption = 'Cleanse'
     end
+    object Separator2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemCatDispose: TMenuItem
+      Caption = 'Dispose'
+    end
   end
   object PopupMenuSpace: TPopupMenu
     Left = 208
     Top = 270
     object MenuItemNewCat: TMenuItem
       Caption = 'New'
+      OnClick = MenuItemNewCatClick
     end
     object MenuItemRefreshSpace: TMenuItem
       Caption = 'Refresh'
+      OnClick = MenuItemRefreshSpaceClick
     end
   end
 end

@@ -1,0 +1,50 @@
+object NewCatForm: TNewCatForm
+  Left = 618
+  Height = 91
+  Top = 667
+  Width = 337
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'New Cat'
+  ClientHeight = 91
+  ClientWidth = 337
+  Position = poOwnerFormCenter
+  LCLVersion = '2.2.6.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 103
+    Caption = 'Name your new cat'
+    ParentColor = False
+  end
+  object EditNewCatName: TEdit
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 320
+    OnChange = EditNewCatNameChange
+    TabOrder = 0
+  end
+  object ButtonOK: TButton
+    Left = 168
+    Height = 25
+    Top = 56
+    Width = 75
+    Caption = 'OK'
+    Default = True
+    Enabled = False
+    ModalResult = 1
+    TabOrder = 1
+  end
+  object ButtonCancel: TButton
+    Left = 253
+    Height = 25
+    Top = 56
+    Width = 75
+    Cancel = True
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 2
+  end
+end

@@ -49,6 +49,12 @@
         <Filename Value="Repository\CatRepository.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="NewCat.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="NewCatForm"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -62,9 +68,15 @@
       <OtherUnitFiles Value="Model;Repository"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <Optimizations>
+        <OptimizationLevel Value="0"/>
+      </Optimizations>
+    </CodeGeneration>
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
+        <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>
         <Win32>
