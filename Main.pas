@@ -34,7 +34,6 @@ type
     procedure MenuItemRefreshSpaceClick(Sender: TObject);
   private
     FCatRepository: TCatRepository;
-    procedure ResetListViewCats;
     procedure InvalidateListViewCats;
   public
 
@@ -56,7 +55,6 @@ end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
 begin
-  ResetListViewCats;
   FreeAndNil(FCatRepository);
 end;
 
@@ -90,11 +88,18 @@ end;
 procedure TMainForm.MenuItemNewCatClick(Sender: TObject);
 var
   newCatForm: TNewCatForm;
+  cat: TCat;
 begin
   try
     newCatForm := TNewCatForm.Create(self);
     if newCatForm.ShowModal = mrOk then begin
-      FCatRepository.NewCat(newCatForm.EditNewCatName.Text).Free;
+      try
+        cat := TCat.Create;
+        cat.Name := newCatForm.EditNewCatName.Text;
+        FCatRepository.Save(cat);
+      finally
+        cat.Free;
+      end;
       InvalidateListViewCats;
     end;
   finally
@@ -107,34 +112,27 @@ begin
   InvalidateListViewCats;
 end;
 
-procedure TMainForm.ResetListViewCats;
-var
-  item: TListItem;
-begin
-  while ListViewCats.Items.Count > 0 do begin
-    item := ListViewCats.Items[0];
-    TCat(item.Data).Free;
-    ListViewCats.Items.Delete(0);
-  end;
-end;
-
 procedure TMainForm.InvalidateListViewCats;
 var
   catList: TList;
   cat: TCat;
-  i: Integer;
+  p: Pointer;
   item: TListItem;
 begin
-  ResetListViewCats;
-  catList := FCatRepository.FindAll;
-  for i := 0 to catList.Count - 1 do begin
-    cat := TCat(catList[i]);
-    item := ListViewCats.Items.Add;
-    item.Data := cat;
-    item.ImageIndex := 0;
-    item.Caption := cat.Name;
+  ListViewCats.Items.Clear;
+  try
+    catList := TList.Create;
+    FCatRepository.FindAll(catList);
+    for p in catList do begin
+      cat := TCat(p);
+      item := ListViewCats.Items.Add;
+      item.Data := cat;
+      item.ImageIndex := 0;
+      item.Caption := cat.Name;
+    end;
+  finally
+    catList.Free;
   end;
-  catList.Free;
 end;
 
 end.

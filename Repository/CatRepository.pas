@@ -10,75 +10,87 @@ uses
 type
   TCatRepository = class
   private
-    FCats: TList;
+    FCatList: TList;
     function FindNextId: Integer;
-    function NewCatInternal(AName: String): TCat;
   public
     constructor Create;
     destructor Destroy; override;
-    function FindAll: TList;
-    function NewCat(AName: String): TCat;
+    function FindAll(ACatList: TList): TList;
+    function FindById(AId: Integer): TCat;
+    function Save(ACat: TCat): TCat;
   end;
 
 implementation
 
 constructor TCatRepository.Create;
+var
+  cat: TCat;
 begin
-  inherited;
-  FCats := TList.Create;
-  // Default cat to play with
-  NewCatInternal('MiMi');
-  NewCatInternal('Potato');
+  FCatList := TList.Create;
+
+  try
+    cat := TCat.Create;
+
+    cat.Name := 'MiMi';
+    Save(cat);
+
+    cat.Name := 'Potato';
+    Save(cat);
+  finally
+    cat.Free;
+  end;
 end;
 
 destructor TCatRepository.Destroy;
 var
-  cat: TCat;
+  p: Pointer;
 begin
-  while FCats.Count > 0 do begin
-    cat := TCat(FCats[0]);
-    cat.Free;
-    FCats.Delete(0);
-  end;
-  FreeAndNil(FCats);
+  for p in FCatList do TCat(p).Free;
+  FreeAndNil(FCatList);
   inherited;
 end;
 
-function TCatRepository.FindAll: TList;
-var
-  i: Integer;
-  cat: TCat;
+function TCatRepository.FindAll(ACatList: TList): TList;
 begin
-  Result := TList.Create;
-  for i := 0 to FCats.Count - 1 do begin
-    cat := TCat(FCats[i]);
-    Result.Add(cat.Clone);
+  ACatList.AddList(FCatList);
+  Result := ACatList;
+end;
+
+function TCatRepository.FindById(AId: Integer): TCat;
+var
+  p: Pointer;
+begin
+  Result := nil;
+  for p in FCatList do begin
+    if TCat(p).Id = AId then begin
+      Result := TCat(p);
+      Exit;
+    end;
   end;
 end;
 
-function TCatRepository.NewCat(AName: String): TCat;
+function TCatRepository.Save(ACat: TCat): TCat;
 begin
-  Result := NewCatInternal(AName).Clone;
+  Result := FindById(ACat.Id);
+  if not Assigned(Result) then begin
+    Result := TCat.Create;
+    Result.Id := FindNextId;
+    FCatList.Add(Result);
+  end;
+  ACat.CopyValuesTo(Result);
 end;
 
 function TCatRepository.FindNextId: Integer;
 var
-  i: Integer;
+  p: Pointer;
   cat: TCat;
 begin
   Result := 0;
-  for i := 0 to FCats.Count - 1 do begin
-    cat := TCat(FCats[i]);
+  for p in FCatList do begin
+    cat := TCat(p);
     if Result < cat.Id then Result := cat.Id;
   end;
   Inc(Result);
-end;
-
-function TCatRepository.NewCatInternal(AName: String): TCat;
-begin
-  Result := TCat.Create;
-  Result.Init(FindNextId, AName);
-  FCats.Add(Result);
 end;
 
 end.
