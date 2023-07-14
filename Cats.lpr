@@ -11,7 +11,7 @@ uses
   {$ENDIF}
   Classes, SysUtils,
   Interfaces, // this includes the LCL widgetset
-  Forms, Main, Cat, CatRepository, NewCat;
+  Forms, Main, Cat, CatRepository, NewCat, ViewCat;
 
 {$R *.res}
 
@@ -22,6 +22,7 @@ begin
   CatRepo := TCatRepository.Create;
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TNewCatForm, NewCatForm);
+  Application.CreateForm(TViewCatForm, ViewCatForm);
   Application.Run;
   FreeAndNil(CatRepo);
 end.

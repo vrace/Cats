@@ -5,7 +5,7 @@ unit Main;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Cat, CatRepository, NewCat;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Menus, Cat, CatRepository, NewCat, ViewCat;
 
 type
 
@@ -63,13 +63,11 @@ begin
 end;
 
 procedure TMainForm.MenuItemCatShowClick(Sender: TObject);
-var
-  cat: TCat;
-  msg: String;
 begin
-  cat := TCat(ListViewCats.Selected.Data);
-  msg := Format('Showing cat ''%s''', [cat.Name]);
-  ShowMessage(msg);
+  if Assigned(ListViewCats.Selected) then begin
+    ViewCatForm.PrepareViewCat(TCat(ListViewCats.Selected.Data));
+    ViewCatForm.ShowModal;
+  end;
 end;
 
 procedure TMainForm.MenuItemNewCatClick(Sender: TObject);
