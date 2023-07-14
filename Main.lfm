@@ -6,8 +6,6 @@ object MainForm: TMainForm
   Caption = 'Cats'
   ClientHeight = 426
   ClientWidth = 712
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poDesktopCenter
   LCLVersion = '2.2.6.0'

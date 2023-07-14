@@ -20,6 +20,9 @@ type
     function Save(ACat: TCat): TCat;
   end;
 
+var
+  CatRepo: TCatRepository;
+
 implementation
 
 constructor TCatRepository.Create;

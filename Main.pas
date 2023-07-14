@@ -25,15 +25,12 @@ type
     Separator1: TMenuItem;
     MenuItemCatShow: TMenuItem;
     PopupMenuCat: TPopupMenu;
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ListViewCatsMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MenuItemCatShowClick(Sender: TObject);
     procedure MenuItemNewCatClick(Sender: TObject);
     procedure MenuItemRefreshSpaceClick(Sender: TObject);
   private
-    FCatRepository: TCatRepository;
     procedure InvalidateListViewCats;
   public
 
@@ -47,16 +44,6 @@ implementation
 {$R *.lfm}
 
 { TMainForm }
-
-procedure TMainForm.FormCreate(Sender: TObject);
-begin
-  FCatRepository := TCatRepository.Create;
-end;
-
-procedure TMainForm.FormDestroy(Sender: TObject);
-begin
-  FreeAndNil(FCatRepository);
-end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
@@ -86,25 +73,9 @@ begin
 end;
 
 procedure TMainForm.MenuItemNewCatClick(Sender: TObject);
-var
-  newCatForm: TNewCatForm;
-  cat: TCat;
 begin
-  try
-    newCatForm := TNewCatForm.Create(self);
-    if newCatForm.ShowModal = mrOk then begin
-      try
-        cat := TCat.Create;
-        cat.Name := newCatForm.EditNewCatName.Text;
-        FCatRepository.Save(cat);
-      finally
-        cat.Free;
-      end;
-      InvalidateListViewCats;
-    end;
-  finally
-    newCatForm.Free;
-  end;
+  NewCatForm.Reset;
+  if NewCatForm.ShowModal = mrOK then InvalidateListViewCats;
 end;
 
 procedure TMainForm.MenuItemRefreshSpaceClick(Sender: TObject);
@@ -122,7 +93,7 @@ begin
   ListViewCats.Items.Clear;
   try
     catList := TList.Create;
-    FCatRepository.FindAll(catList);
+    CatRepo.FindAll(catList);
     for p in catList do begin
       cat := TCat(p);
       item := ListViewCats.Items.Add;

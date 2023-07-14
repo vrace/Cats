@@ -1,7 +1,7 @@
 object NewCatForm: TNewCatForm
-  Left = 618
+  Left = 647
   Height = 91
-  Top = 667
+  Top = 640
   Width = 337
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
@@ -35,6 +35,7 @@ object NewCatForm: TNewCatForm
     Default = True
     Enabled = False
     ModalResult = 1
+    OnClick = ButtonOKClick
     TabOrder = 1
   end
   object ButtonCancel: TButton
